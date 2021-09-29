@@ -146,6 +146,9 @@
                     <main>
                         <h1 id="the-rust-programming-language"><a class="header" href="#the-rust-programming-language">The Rust Programming Language</a></h1>
 <p>The digest for the <a href="https://doc.rust-lang.org/book/title-page.html">Rust book</a>.</p>
+<p>For readers who don't have deep understanding of another programming language but want to learn Rust, it's highly recommended to read the original book. It's much more verbose but also much more in detail.</p>
+<p>For experienced programmars who are already quite famliar with at least one language, reading this digest might work for you to get started with Rust quickly.</p>
+<p>This digest also works as a &quot;cheat sheet&quot; if you forget something but want to do a quick search.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="0-introduction"><a class="header" href="#0-introduction">0. Introduction</a></h1>
 <p>Rust usage examples:</p>
 <ul>
@@ -497,7 +500,126 @@ fn main() {
 </code></pre></pre>
 <p><code>rev</code> to reverse the range.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="4-ownership"><a class="header" href="#4-ownership">4. Ownership</a></h1>
-<p>TEST</p>
+<p>All programs have to manage the way they use a computer's memory while running. Some languages have garbage collection; in other languages, the programmer must explicitly allocate and free the memory. Rust uses a third approach: memory is managed through a system of <strong>ownership</strong> with a set of rules that the compiler checks at compile time. None of the ownership features slow down your program while it's running.</p>
+<p>A word on GC: Garbage collection frees the programmer from manually deallocating memory. This eliminates or reduces some categories of errors: dangling pointers, double free bugs, certain kinds of memory leaks, etc. The disadvantages is that, it consumes computing resources in deciding which memory to free, even though the programmer may have already known this information.</p>
+<h2 id="41-stack--heap"><a class="header" href="#41-stack--heap">4.1 Stack &amp; Heap</a></h2>
+<p>All data stored on the stack must have a known, fixed size. Data with an unknown size at compile time or a size that might change must be stored on the heap instead.</p>
+<p>Pushing to the stack is faster than allocating on the heap. Accessing data in the heap is slower than accessing data on the stack. Allocating a large amount of space on the heap can also take time.</p>
+<p>When your code calls a function, the values passed into the function (including, potentially, pointers to data on the heap) and the function's local variables get pushed onto the stack. When the function is over, those values get popped off the stack.</p>
+<h2 id="42-ownership-rules"><a class="header" href="#42-ownership-rules">4.2 Ownership Rules</a></h2>
+<p>Keeping track of what parts of code are using what data on the heap, minimizing the amount of duplicate data on the heap, and cleaning up unused data on the heap so you don't run out of space are all problems that ownership addresses. Once you understand ownership, you won't need to think about the stack and the heap very often, but knowing that managing heap data is why ownership exists can help explain why it works the way it does.</p>
+<ul>
+<li>Each value in Rust has a variable that's called its owner.</li>
+<li>There can only be one owner at a time.</li>
+<li>When the owner goes out of scope, the value will be dropped.</li>
+</ul>
+<pre><pre class="playground"><code class="language-rust">fn main() {
+    {                      // s is not valid here, it’s not yet declared
+        let s = &quot;hello&quot;;   // s is valid from this point forward
+        // do stuff with s
+    }                      // this scope is now over, and s is no longer valid
+}
+</code></pre></pre>
+<h2 id="43-the-string-type-on-the-heap"><a class="header" href="#43-the-string-type-on-the-heap">4.3 The String Type (on the heap)</a></h2>
+<p>The data types mentioned in Chapter 3 are all in the stack.</p>
+<p>The <code>String</code> type is on the heap.</p>
+<h2 id="44-move-and-clone"><a class="header" href="#44-move-and-clone">4.4 Move and Clone</a></h2>
+<pre><code class="language-rust ignore">fn main() {
+    let s1 = String::from(&quot;hello&quot;);
+    let s2 = s1;                // s1 &quot;moved&quot; to s2, doesn't do &quot;deepcopy&quot;, but rather a shallow copy.
+    println!(&quot;{}, world!&quot;, s1); // s1 can't be borrowed because it's already moved to s2
+}
+</code></pre>
+<pre><pre class="playground"><code class="language-rust">fn main() {
+    let s1 = String::from(&quot;hello&quot;);
+    let s2 = s1.clone();
+
+    println!(&quot;s1 = {}, s2 = {}&quot;, s1, s2);
+}
+</code></pre></pre>
+<p><code>clone()</code> is like deepcopy.</p>
+<p>For stack only data, no need to clone:</p>
+<pre><pre class="playground"><code class="language-rust">fn main() {
+    let x = 5;
+    let y = x;  // clone; x isn't moved to y
+
+    println!(&quot;x = {}, y = {}&quot;, x, y);  // x still available
+}
+</code></pre></pre>
+<p>If a type implements the Copy trait, an older variable is still usable after assignment. Rust won’t let us annotate a type with the Copy trait if the type, or any of its parts, has implemented the Drop trait.</p>
+<p>Any group of simple scalar values can implement <code>Copy</code>, and nothing that requires allocation or is some form of resource can implement Copy.</p>
+<p>Here are some of the types that implement <code>Copy</code>:</p>
+<ul>
+<li>All the integer types, such as u32.</li>
+<li>The Boolean type, bool, with values true and false.</li>
+<li>All the floating point types, such as f64.</li>
+<li>The character type, char.</li>
+<li>Tuples, if they only contain types that also implement Copy. For example, (i32, i32) implements Copy, but (i32, String) does not.</li>
+</ul>
+<h2 id="45-functions-and-ownership"><a class="header" href="#45-functions-and-ownership">4.5 Functions and Ownership</a></h2>
+<p>The semantics for passing a value to a function are similar to those for assigning a value to a variable. Passing a variable to a function will move or copy, just as assignment does.</p>
+<p>Returning values can also transfer ownership. </p>
+<h2 id="46-references-and-borrowing"><a class="header" href="#46-references-and-borrowing">4.6 References and Borrowing</a></h2>
+<p><code>&amp;</code> and <code>*</code> (dereferencing), like in other languages.</p>
+<p>Just as variables are immutable by default, so are references. We’re not allowed to modify something we have a reference to.</p>
+<p><strong>Mutable reference:</strong></p>
+<pre><pre class="playground"><code class="language-rust">fn main() {
+    let mut s = String::from(&quot;hello&quot;);
+    change(&amp;mut s);
+}
+
+fn change(some_string: &amp;mut String) {
+    some_string.push_str(&quot;, world&quot;);
+}
+</code></pre></pre>
+<p>Only one mutable reference to a particular piece of data in a particular scope. This code will fail:</p>
+<pre><code class="language-rust ignore">fn main() {
+    let mut s = String::from(&quot;hello&quot;);
+    let r1 = &amp;mut s;
+    let r2 = &amp;mut s;
+    println!(&quot;{}, {}&quot;, r1, r2);
+}
+</code></pre>
+<p>No combining mutable and immutable references.</p>
+<h2 id="47-dangling-references"><a class="header" href="#47-dangling-references">4.7 Dangling References</a></h2>
+<pre><code class="language-rust ignore">fn main() {
+    let reference_to_nothing = dangle();
+}
+
+fn dangle() -&gt; &amp;String { // dangle returns a reference to a String
+
+    let s = String::from(&quot;hello&quot;); // s is a new String
+
+    &amp;s // we return a reference to the String, s
+} // Here, s goes out of scope, and is dropped. Its memory goes away.
+  // Danger!
+</code></pre>
+<h2 id="48-rules-of-references"><a class="header" href="#48-rules-of-references">4.8 Rules of References</a></h2>
+<ul>
+<li>At any given time, you can have either one mutable reference or any number of immutable references.</li>
+<li>References must always be valid.</li>
+</ul>
+<h2 id="49-the-slice-type"><a class="header" href="#49-the-slice-type">4.9 The Slice Type</a></h2>
+<p>Slice also doesn't have ownership. Type: <code>&amp;str</code>.</p>
+<p>We can create slices using a range within brackets by specifying [starting_index..ending_index].</p>
+<p>With Rust’s .. range syntax, if you want to start at index zero, you can drop the value before the two periods. In other words, these are equal:</p>
+<pre><pre class="playground"><code class="language-rust">fn main() {
+    let s = String::from(&quot;hello&quot;);
+
+    let slice = &amp;s[0..2];
+    let slice = &amp;s[0..=1];
+    let slice = &amp;s[..2];
+}
+</code></pre></pre>
+<p>You can also drop both values to take a slice of the entire string. So these are equal:</p>
+<pre><pre class="playground"><code class="language-rust">fn main() {
+    let s = String::from(&quot;hello&quot;);
+    let len = s.len();
+    let slice = &amp;s[0..len];
+    let slice = &amp;s[..];
+}
+</code></pre></pre>
+<p><strong>String literals are slices.</strong></p>
 
                     </main>
 
