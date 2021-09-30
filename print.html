@@ -83,7 +83,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="title-page.html">The Rust Programming Language Digest</a></li><li class="chapter-item expanded affix "><a href="0_introduction.html">Introduction</a></li><li class="chapter-item expanded "><a href="1_getting_started.html"><strong aria-hidden="true">1.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="2_guessing_game.html"><strong aria-hidden="true">2.</strong> Guessing Game</a></li><li class="chapter-item expanded "><a href="3_common_concepts.html"><strong aria-hidden="true">3.</strong> Common Concepts</a></li><li class="chapter-item expanded "><a href="4_ownership.html"><strong aria-hidden="true">4.</strong> Ownership</a></li></ol>            </div>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="title-page.html">The Rust Programming Language Digest</a></li><li class="chapter-item expanded affix "><a href="0_introduction.html">Introduction</a></li><li class="chapter-item expanded "><a href="1_getting_started.html"><strong aria-hidden="true">1.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="2_guessing_game.html"><strong aria-hidden="true">2.</strong> Guessing Game</a></li><li class="chapter-item expanded "><a href="3_common_concepts.html"><strong aria-hidden="true">3.</strong> Common Concepts</a></li><li class="chapter-item expanded "><a href="4_ownership.html"><strong aria-hidden="true">4.</strong> Ownership</a></li><li class="chapter-item expanded "><a href="5_structs.html"><strong aria-hidden="true">5.</strong> Structs</a></li></ol>            </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
 
@@ -620,6 +620,165 @@ fn dangle() -&gt; &amp;String { // dangle returns a reference to a String
 }
 </code></pre></pre>
 <p><strong>String literals are slices.</strong></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="5-structs"><a class="header" href="#5-structs">5. Structs</a></h1>
+<h2 id="51-mutable-struct"><a class="header" href="#51-mutable-struct">5.1 Mutable Struct:</a></h2>
+<p><strong>The entire instance must be mutable; Rust doesn't allow us to mark only certain fields as mutable.</strong></p>
+<h2 id="52-field-init-shorthand"><a class="header" href="#52-field-init-shorthand">5.2 Field Init Shorthand</a></h2>
+<p>The main benefit of using methods instead of functions, in addition to using method syntax and not having to repeat the type of self in every method's signature, is for organization.</p>
+<p>Use the same name as the fields:</p>
+<pre><pre class="playground"><code class="language-rust">struct User {
+    username: String,
+    email: String,
+    sign_in_count: u64,
+    active: bool,
+}
+
+fn build_user(email: String, username: String) -&gt; User {
+    User {
+        email,      // field init shorthand
+        username,   // field init shorthand
+        active: true,
+        sign_in_count: 1,
+    }
+}
+
+fn main() {
+    let user1 = build_user(
+        String::from(&quot;someone@example.com&quot;),
+        String::from(&quot;someusername123&quot;),
+    );
+}
+</code></pre></pre>
+<p>The <code>String</code> type rather than the <code>&amp;str</code> string slice type is used in the example above.</p>
+<p>This is a deliberate choice because we want instances of this struct to own all of its data and for that data to be valid for as long as the entire struct is valid.</p>
+<h2 id="53-struct-update-syntax"><a class="header" href="#53-struct-update-syntax">5.3 Struct Update Syntax</a></h2>
+<pre><code class="language-rust ignore">fn main() {
+    let user1 = User {
+        email: String::from(&quot;someone@example.com&quot;),
+        username: String::from(&quot;someusername123&quot;),
+        active: true,
+        sign_in_count: 1,
+    };
+
+    let user2 = User {
+        email: String::from(&quot;another@example.com&quot;),
+        username: String::from(&quot;anotherusername567&quot;),
+        ..user1     // struct update syntax
+    };
+}
+</code></pre>
+<h2 id="54-tuple-structs"><a class="header" href="#54-tuple-structs">5.4 Tuple Structs</a></h2>
+<p>Tuple structs are useful when you want to give the whole tuple a name and make the tuple be a different type from other tuples, and naming each field as in a regular struct would be verbose or redundant.</p>
+<p>Example:</p>
+<pre><pre class="playground"><code class="language-rust">fn main() {
+    struct Color(i32, i32, i32);
+    struct Point(i32, i32, i32);
+
+    let black = Color(0, 0, 0);
+    let origin = Point(0, 0, 0);
+}
+</code></pre></pre>
+<h2 id="55-struct-as-param"><a class="header" href="#55-struct-as-param">5.5 Struct as param</a></h2>
+<pre><pre class="playground"><code class="language-rust">struct Rectangle {
+    width: u32,
+    height: u32,
+}
+
+fn main() {
+    let rect1 = Rectangle {
+        width: 30,
+        height: 50,
+    };
+
+    println!(
+        &quot;The area of the rectangle is {} square pixels.&quot;,
+        area(&amp;rect1)
+    );
+}
+
+fn area(rectangle: &amp;Rectangle) -&gt; u32 {
+    rectangle.width * rectangle.height
+}
+</code></pre></pre>
+<h2 id="56-adding-useful-functionality-with-derived-traits"><a class="header" href="#56-adding-useful-functionality-with-derived-traits">5.6 Adding Useful Functionality with Derived Traits</a></h2>
+<p>In the <code>println!</code>, by default, the curly brackets tell <code>println!</code> to use formatting known as <code>Display</code>.</p>
+<p>In format strings you may be able to use <code>{:?}</code> (or <code>{:#?}</code> for <strong>pretty-print</strong> instead, using the <code>Debug</code> trait.</p>
+<p>We have to explicitly opt in to make that functionality available for our struct.</p>
+<pre><pre class="playground"><code class="language-rust">#[derive(Debug)]
+struct Rectangle {
+    width: u32,
+    height: u32,
+}
+
+fn main() {
+    let rect1 = Rectangle {
+        width: 30,
+        height: 50,
+    };
+
+    println!(&quot;rect1 is {:#?}&quot;, rect1);
+}
+</code></pre></pre>
+<h2 id="57-method"><a class="header" href="#57-method">5.7 Method</a></h2>
+<p>Methods are different from functions in that they're defined within the context of a struct, and their first parameter is always self, which represents the instance of the struct the method is being called on.</p>
+<p>The main benefit of using methods instead of functions, in addition to using method syntax and not having to repeat the type of self in every method's signature, is for organization.</p>
+<pre><pre class="playground"><code class="language-rust">struct Rectangle {
+    width: u32,
+    height: u32,
+}
+
+impl Rectangle {
+    fn area(&amp;self) -&gt; u32 {
+        // here &amp;self is used instead of self,
+        // beacuse we only want to read data, instead of taking ownership
+        self.width * self.height
+    }
+}
+
+fn main() {
+    let rect1 = Rectangle {
+        width: 30,
+        height: 50,
+    };
+
+    println!(
+        &quot;The area of the rectangle is {} square pixels.&quot;,
+        rect1.area()
+    );
+}
+</code></pre></pre>
+<p>The <code>impl</code> block defines on which struct the method is implemented.</p>
+<p>Each struct is allowed to have multiple impl blocks.</p>
+<p>Methods can take ownership of <code>self</code>, borrow self immutably (in the code above), or borrow self mutably.</p>
+<p>If we wanted to change the instance that we've called the method on as part of what the method does, we'd use <code>&amp;mut self</code> as the first parameter.</p>
+<h2 id="58-automatic-referencing-and-dereferencing"><a class="header" href="#58-automatic-referencing-and-dereferencing">5.8 Automatic Referencing and Dereferencing</a></h2>
+<p>When you call a method with <code>object.something()</code>, Rust automatically adds in <code>&amp;</code>, <code>&amp;mut</code>, or <code>*</code> so object matches the signature of the method.</p>
+<pre><code class="language-rust ignore">p1.distance(&amp;p2);
+(&amp;p1).distance(&amp;p2);
+</code></pre>
+<p>They are the same.</p>
+<h2 id="59-associated-functions"><a class="header" href="#59-associated-functions">5.9 Associated Functions</a></h2>
+<p>Functions within impl blocks that don't take self as a parameter are called associated functions because they're associated with the struct.</p>
+<p>They're still functions, not methods, because they don't have an instance of the struct to work with.</p>
+<p>Associated functions are often used for constructors that will return a new instance of the struct. </p>
+<pre><pre class="playground"><code class="language-rust">struct Rectangle {
+    width: u32,
+    height: u32,
+}
+
+impl Rectangle {
+    fn square(size: u32) -&gt; Rectangle {
+        Rectangle {
+            width: size,
+            height: size,
+        }
+    }
+}
+
+fn main() {
+    let sq = Rectangle::square(3);
+}
+</code></pre></pre>
 
                     </main>
 

@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Guessing Game</title>
+        <title>Structs</title>
                 
 
         <!-- Custom HTML head -->
@@ -82,7 +82,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="title-page.html">The Rust Programming Language Digest</a></li><li class="chapter-item expanded affix "><a href="0_introduction.html">Introduction</a></li><li class="chapter-item expanded "><a href="1_getting_started.html"><strong aria-hidden="true">1.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="2_guessing_game.html" class="active"><strong aria-hidden="true">2.</strong> Guessing Game</a></li><li class="chapter-item expanded "><a href="3_common_concepts.html"><strong aria-hidden="true">3.</strong> Common Concepts</a></li><li class="chapter-item expanded "><a href="4_ownership.html"><strong aria-hidden="true">4.</strong> Ownership</a></li><li class="chapter-item expanded "><a href="5_structs.html"><strong aria-hidden="true">5.</strong> Structs</a></li></ol>            </div>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="title-page.html">The Rust Programming Language Digest</a></li><li class="chapter-item expanded affix "><a href="0_introduction.html">Introduction</a></li><li class="chapter-item expanded "><a href="1_getting_started.html"><strong aria-hidden="true">1.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="2_guessing_game.html"><strong aria-hidden="true">2.</strong> Guessing Game</a></li><li class="chapter-item expanded "><a href="3_common_concepts.html"><strong aria-hidden="true">3.</strong> Common Concepts</a></li><li class="chapter-item expanded "><a href="4_ownership.html"><strong aria-hidden="true">4.</strong> Ownership</a></li><li class="chapter-item expanded "><a href="5_structs.html" class="active"><strong aria-hidden="true">5.</strong> Structs</a></li></ol>            </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
 
@@ -143,110 +143,174 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="2-guessing-game"><a class="header" href="#2-guessing-game">2. Guessing Game</a></h1>
-<h2 id="21-bring-library-into-scope"><a class="header" href="#21-bring-library-into-scope">2.1 Bring Library into Scope</a></h2>
-<pre><code class="language-rust ignore">use std::io;
-</code></pre>
-<h2 id="22-mutable-vs-immutable"><a class="header" href="#22-mutable-vs-immutable">2.2 Mutable V.S. immutable</a></h2>
-<pre><code class="language-rust ignore">let apples = 5; // immutable
-let mut bananas = 5; // mutable
-</code></pre>
-<p>By default variables are immutable.</p>
-<h2 id="23-read-input"><a class="header" href="#23-read-input">2.3 Read Input</a></h2>
-<pre><code class="language-rust ignore">io::stdin()
-    .read_line(&amp;mut guess)
-    .expect(&quot;Failed to read line&quot;);
-</code></pre>
-<p>One long line is difficult to read, so it’s best to divide it.</p>
-<p><code>read_line</code> returns a value, an <code>io::Result</code>. The Result types are enums. For Result, the variants are:</p>
-<ul>
-<li><code>Ok</code>: the operation was successful, and inside Ok is the successfully generated value;</li>
-<li><code>Err</code>: the operation failed, and Err contains information about how or why the operation failed.</li>
-</ul>
-<p><code>expect</code>:</p>
-<ul>
-<li>if <code>io::Result</code> is an <code>Err</code> value, expect will cause the program to crash and display the message that you passed as an argument to expect;</li>
-<li>if <code>io::Result</code> is an <code>Ok</code> value, expect will take the return value that Ok is holding and return just that value to you so you can use it.</li>
-</ul>
-<h2 id="24-line-print-with-placeholder"><a class="header" href="#24-line-print-with-placeholder">2.4 Line Print with Placeholder</a></h2>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>let x = 5;
-let y = 10;
+                        <h1 id="5-structs"><a class="header" href="#5-structs">5. Structs</a></h1>
+<h2 id="51-mutable-struct"><a class="header" href="#51-mutable-struct">5.1 Mutable Struct:</a></h2>
+<p><strong>The entire instance must be mutable; Rust doesn't allow us to mark only certain fields as mutable.</strong></p>
+<h2 id="52-field-init-shorthand"><a class="header" href="#52-field-init-shorthand">5.2 Field Init Shorthand</a></h2>
+<p>The main benefit of using methods instead of functions, in addition to using method syntax and not having to repeat the type of self in every method's signature, is for organization.</p>
+<p>Use the same name as the fields:</p>
+<pre><pre class="playground"><code class="language-rust">struct User {
+    username: String,
+    email: String,
+    sign_in_count: u64,
+    active: bool,
+}
 
-println!(&quot;x = {} and y = {}&quot;, x, y);
-<span class="boring">}
-</span></code></pre></pre>
-<h2 id="25-adding-dependencies"><a class="header" href="#25-adding-dependencies">2.5 Adding Dependencies</a></h2>
-<p>In <code>Cargo.toml</code> file, add:</p>
-<pre><code class="language-rust ignore">rand = &quot;0.8.3&quot;
-</code></pre>
-<p>Here, SEMVER is used.</p>
-<p>Update cargo:</p>
-<pre><code class="language-bash">cargo update
-</code></pre>
-<h2 id="26-rng"><a class="header" href="#26-rng">2.6 RNG</a></h2>
-<pre><code class="language-rust ignore">use rand::Rng;
+fn build_user(email: String, username: String) -&gt; User {
+    User {
+        email,      // field init shorthand
+        username,   // field init shorthand
+        active: true,
+        sign_in_count: 1,
+    }
+}
 
 fn main() {
-    let secret_number = rand::thread_rng().gen_range(1..101);
-    println!(&quot;The secret number is: {}&quot;, secret_number);
+    let user1 = build_user(
+        String::from(&quot;someone@example.com&quot;),
+        String::from(&quot;someusername123&quot;),
+    );
+}
+</code></pre></pre>
+<p>The <code>String</code> type rather than the <code>&amp;str</code> string slice type is used in the example above.</p>
+<p>This is a deliberate choice because we want instances of this struct to own all of its data and for that data to be valid for as long as the entire struct is valid.</p>
+<h2 id="53-struct-update-syntax"><a class="header" href="#53-struct-update-syntax">5.3 Struct Update Syntax</a></h2>
+<pre><code class="language-rust ignore">fn main() {
+    let user1 = User {
+        email: String::from(&quot;someone@example.com&quot;),
+        username: String::from(&quot;someusername123&quot;),
+        active: true,
+        sign_in_count: 1,
+    };
+
+    let user2 = User {
+        email: String::from(&quot;another@example.com&quot;),
+        username: String::from(&quot;anotherusername567&quot;),
+        ..user1     // struct update syntax
+    };
 }
 </code></pre>
-<h2 id="27-gen_range"><a class="header" href="#27-gen_range">2.7 <code>gen_range</code></a></h2>
-<p>gen_range(start..end):</p>
-<ul>
-<li>inclusive on the lower bound</li>
-<li>exclusive on the upper bound</li>
-<li>range <code>1..101</code> is equivalent to <code>1..=100</code></li>
-</ul>
-<h2 id="28-match-expression"><a class="header" href="#28-match-expression">2.8 Match Expression</a></h2>
-<p><code>std::cmp::Ordering</code> enum:</p>
-<ul>
-<li><code>Less</code></li>
-<li><code>Greater</code></li>
-<li><code>Equal</code></li>
-</ul>
-<p>A match expression is made up of arms:</p>
-<pre><code class="language-rust ignore">match guess.cmp(&amp;secret_number) {
-    Ordering::Less =&gt; println!(&quot;Too small!&quot;),
-    Ordering::Greater =&gt; println!(&quot;Too big!&quot;),
-    Ordering::Equal =&gt; println!(&quot;You win!&quot;),
+<h2 id="54-tuple-structs"><a class="header" href="#54-tuple-structs">5.4 Tuple Structs</a></h2>
+<p>Tuple structs are useful when you want to give the whole tuple a name and make the tuple be a different type from other tuples, and naming each field as in a regular struct would be verbose or redundant.</p>
+<p>Example:</p>
+<pre><pre class="playground"><code class="language-rust">fn main() {
+    struct Color(i32, i32, i32);
+    struct Point(i32, i32, i32);
+
+    let black = Color(0, 0, 0);
+    let origin = Point(0, 0, 0);
 }
+</code></pre></pre>
+<h2 id="55-struct-as-param"><a class="header" href="#55-struct-as-param">5.5 Struct as param</a></h2>
+<pre><pre class="playground"><code class="language-rust">struct Rectangle {
+    width: u32,
+    height: u32,
+}
+
+fn main() {
+    let rect1 = Rectangle {
+        width: 30,
+        height: 50,
+    };
+
+    println!(
+        &quot;The area of the rectangle is {} square pixels.&quot;,
+        area(&amp;rect1)
+    );
+}
+
+fn area(rectangle: &amp;Rectangle) -&gt; u32 {
+    rectangle.width * rectangle.height
+}
+</code></pre></pre>
+<h2 id="56-adding-useful-functionality-with-derived-traits"><a class="header" href="#56-adding-useful-functionality-with-derived-traits">5.6 Adding Useful Functionality with Derived Traits</a></h2>
+<p>In the <code>println!</code>, by default, the curly brackets tell <code>println!</code> to use formatting known as <code>Display</code>.</p>
+<p>In format strings you may be able to use <code>{:?}</code> (or <code>{:#?}</code> for <strong>pretty-print</strong> instead, using the <code>Debug</code> trait.</p>
+<p>We have to explicitly opt in to make that functionality available for our struct.</p>
+<pre><pre class="playground"><code class="language-rust">#[derive(Debug)]
+struct Rectangle {
+    width: u32,
+    height: u32,
+}
+
+fn main() {
+    let rect1 = Rectangle {
+        width: 30,
+        height: 50,
+    };
+
+    println!(&quot;rect1 is {:#?}&quot;, rect1);
+}
+</code></pre></pre>
+<h2 id="57-method"><a class="header" href="#57-method">5.7 Method</a></h2>
+<p>Methods are different from functions in that they're defined within the context of a struct, and their first parameter is always self, which represents the instance of the struct the method is being called on.</p>
+<p>The main benefit of using methods instead of functions, in addition to using method syntax and not having to repeat the type of self in every method's signature, is for organization.</p>
+<pre><pre class="playground"><code class="language-rust">struct Rectangle {
+    width: u32,
+    height: u32,
+}
+
+impl Rectangle {
+    fn area(&amp;self) -&gt; u32 {
+        // here &amp;self is used instead of self,
+        // beacuse we only want to read data, instead of taking ownership
+        self.width * self.height
+    }
+}
+
+fn main() {
+    let rect1 = Rectangle {
+        width: 30,
+        height: 50,
+    };
+
+    println!(
+        &quot;The area of the rectangle is {} square pixels.&quot;,
+        rect1.area()
+    );
+}
+</code></pre></pre>
+<p>The <code>impl</code> block defines on which struct the method is implemented.</p>
+<p>Each struct is allowed to have multiple impl blocks.</p>
+<p>Methods can take ownership of <code>self</code>, borrow self immutably (in the code above), or borrow self mutably.</p>
+<p>If we wanted to change the instance that we've called the method on as part of what the method does, we'd use <code>&amp;mut self</code> as the first parameter.</p>
+<h2 id="58-automatic-referencing-and-dereferencing"><a class="header" href="#58-automatic-referencing-and-dereferencing">5.8 Automatic Referencing and Dereferencing</a></h2>
+<p>When you call a method with <code>object.something()</code>, Rust automatically adds in <code>&amp;</code>, <code>&amp;mut</code>, or <code>*</code> so object matches the signature of the method.</p>
+<pre><code class="language-rust ignore">p1.distance(&amp;p2);
+(&amp;p1).distance(&amp;p2);
 </code></pre>
-<h2 id="29-trim--parse-handle-input"><a class="header" href="#29-trim--parse-handle-input">2.9 Trim &amp; Parse: Handle Input</a></h2>
-<pre><code class="language-rust ignore">let guess: u32 = guess.trim().parse().expect(&quot;Please type a number!&quot;);
-</code></pre>
-<p>The <code>trim</code> method eliminates <code>\n</code> or <code>\r\n</code>.</p>
-<ul>
-<li><code>parse</code> method on strings: parses a string into some kind of number</li>
-<li>could easily cause an error</li>
-<li>returns a <code>Result type</code>, needs to be handled</li>
-</ul>
-<h2 id="210-loop-and-break"><a class="header" href="#210-loop-and-break">2.10 Loop and Break</a></h2>
-<pre><code class="language-rust ignore">    loop {
-        match guess.cmp(&amp;secret_number) {
-            Ordering::Less =&gt; println!(&quot;Too small!&quot;),
-            Ordering::Greater =&gt; println!(&quot;Too big!&quot;),
-            Ordering::Equal =&gt; {
-                break;
-            }
+<p>They are the same.</p>
+<h2 id="59-associated-functions"><a class="header" href="#59-associated-functions">5.9 Associated Functions</a></h2>
+<p>Functions within impl blocks that don't take self as a parameter are called associated functions because they're associated with the struct.</p>
+<p>They're still functions, not methods, because they don't have an instance of the struct to work with.</p>
+<p>Associated functions are often used for constructors that will return a new instance of the struct. </p>
+<pre><pre class="playground"><code class="language-rust">struct Rectangle {
+    width: u32,
+    height: u32,
+}
+
+impl Rectangle {
+    fn square(size: u32) -&gt; Rectangle {
+        Rectangle {
+            width: size,
+            height: size,
         }
     }
-</code></pre>
+}
+
+fn main() {
+    let sq = Rectangle::square(3);
+}
+</code></pre></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                                                    <a rel="prev" href="1_getting_started.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                                    <a rel="prev" href="4_ownership.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
                         
-                                                    <a rel="next" href="3_common_concepts.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
-                            </a>
                         
                         <div style="clear: both"></div>
                     </nav>
@@ -254,13 +318,10 @@ fn main() {
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                                    <a rel="prev" href="1_getting_started.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                    <a rel="prev" href="4_ownership.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
                 
-                                    <a rel="next" href="3_common_concepts.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
                             </nav>
 
         </div>
