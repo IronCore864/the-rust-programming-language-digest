@@ -9,3 +9,4 @@
 - [Guessing Game](2_guessing_game.md)
 - [Common Concepts](3_common_concepts.md)
 - [Ownership](4_ownership.md)
+- [Structs](5_structs.md)
