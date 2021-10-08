@@ -4,36 +4,29 @@
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
         <title></title>
-                <meta name="robots" content="noindex" />
-                
-
+        <meta name="robots" content="noindex" />
         <!-- Custom HTML head -->
-        
-
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff" />
 
-                <link rel="icon" href="favicon.svg">
-                        <link rel="shortcut icon" href="favicon.png">
-                <link rel="stylesheet" href="css/variables.css">
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
         <link rel="stylesheet" href="css/general.css">
         <link rel="stylesheet" href="css/chrome.css">
-                <link rel="stylesheet" href="css/print.css" media="print">
-        
+        <link rel="stylesheet" href="css/print.css" media="print">
         <!-- Fonts -->
         <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
-                <link rel="stylesheet" href="fonts/fonts.css">
-        
+        <link rel="stylesheet" href="fonts/fonts.css">
         <!-- Highlight.js Stylesheets -->
         <link rel="stylesheet" href="highlight.css">
         <link rel="stylesheet" href="tomorrow-night.css">
         <link rel="stylesheet" href="ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
-        
-            </head>
+    </head>
     <body>
         <!-- Provide site root to javascript -->
         <script type="text/javascript">
@@ -83,14 +76,14 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="title-page.html">The Rust Programming Language Digest</a></li><li class="chapter-item expanded affix "><a href="0_introduction.html">Introduction</a></li><li class="chapter-item expanded "><a href="1_getting_started.html"><strong aria-hidden="true">1.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="2_guessing_game.html"><strong aria-hidden="true">2.</strong> Guessing Game</a></li><li class="chapter-item expanded "><a href="3_common_concepts.html"><strong aria-hidden="true">3.</strong> Common Concepts</a></li><li class="chapter-item expanded "><a href="4_ownership.html"><strong aria-hidden="true">4.</strong> Ownership</a></li><li class="chapter-item expanded "><a href="5_structs.html"><strong aria-hidden="true">5.</strong> Structs</a></li></ol>            </div>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="title-page.html">The Rust Programming Language Digest</a></li><li class="chapter-item expanded affix "><a href="0_introduction.html">Introduction</a></li><li class="chapter-item expanded "><a href="1_getting_started.html"><strong aria-hidden="true">1.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="2_guessing_game.html"><strong aria-hidden="true">2.</strong> Guessing Game</a></li><li class="chapter-item expanded "><a href="3_common_concepts.html"><strong aria-hidden="true">3.</strong> Common Concepts</a></li><li class="chapter-item expanded "><a href="4_ownership.html"><strong aria-hidden="true">4.</strong> Ownership</a></li><li class="chapter-item expanded "><a href="5_structs.html"><strong aria-hidden="true">5.</strong> Structs</a></li><li class="chapter-item expanded "><a href="6_enums_and_pattern_matching.html"><strong aria-hidden="true">6.</strong> Enums and Pattern Matching</a></li></ol>
+            </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
 
         <div id="page-wrapper" class="page-wrapper">
 
             <div class="page">
-                
                 <div id="menu-bar-hover-placeholder"></div>
                 <div id="menu-bar" class="menu-bar sticky bordered">
                     <div class="left-buttons">
@@ -107,22 +100,21 @@
                             <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
                         </ul>
-                                                <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
                             <i class="fa fa-search"></i>
                         </button>
-                                            </div>
+                    </div>
 
                     <h1 class="menu-title"></h1>
 
                     <div class="right-buttons">
-                                                <a href="print.html" title="Print this book" aria-label="Print this book">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
-                                                                        
                     </div>
                 </div>
 
-                                <div id="search-wrapper" class="hidden">
+                <div id="search-wrapper" class="hidden">
                     <form id="searchbar-outer" class="searchbar-outer">
                         <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
                     </form>
@@ -132,7 +124,6 @@
                         </ul>
                     </div>
                 </div>
-                
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
                 <script type="text/javascript">
                     document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
@@ -779,47 +770,255 @@ fn main() {
     let sq = Rectangle::square(3);
 }
 </code></pre></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="6-enums-and-pattern-matching"><a class="header" href="#6-enums-and-pattern-matching">6. Enums and Pattern Matching</a></h1>
+<p>Enums (enumerations) allow you to define a type by enumerating its possible variants.</p>
+<p>Enums are a feature in many languages, but their capabilities differ in each language.</p>
+<p>Rust's enums are most similar to algebraic data types in functional languages, such as F#, OCaml, and Haskell.</p>
+<h2 id="61-enum-definition--differences-with"><a class="header" href="#61-enum-definition--differences-with">6.1 Enum Definition &amp; Differences with</a></h2>
+<pre><pre class="playground"><code class="language-rust">fn main() {
+    enum IpAddrKind {
+        V4,
+        V6,
+    }
+
+    enum IpAddr {
+        V4(u8, u8, u8, u8),
+        V6(String),
+    }
+
+    let home = IpAddr::V4(127, 0, 0, 1);
+    let loopback = IpAddr::V6(String::from(&quot;::1&quot;));
+
+    enum Message {
+        Quit,
+        Move { x: i32, y: i32 },
+        Write(String),
+        ChangeColor(i32, i32, i32),
+    }
+
+    impl Message {
+        fn call(&amp;self) {
+            // method body would be defined here
+        }
+    }
+
+    let m = Message::Write(String::from(&quot;hello&quot;));
+    m.call();
+}
+</code></pre></pre>
+<ul>
+<li>We can attach data to each variant of the enum directly.</li>
+<li>Each variant can have different types and amounts of associated data.</li>
+<li>We can define methods on enums.</li>
+</ul>
+<h2 id="62-the-option-enum-vs-null-values"><a class="header" href="#62-the-option-enum-vs-null-values">6.2 The Option Enum V.S. Null Values</a></h2>
+<p>Option is another enum defined by the standard library.</p>
+<p>Null: billion-dollar mistake. Rust does not have nulls, but it does have an enum that can encode the concept of a value being present or absent. This enum is Option<T>, and it is defined by the standard library as follows:</p>
+<pre><pre class="playground"><code class="language-rust">#![allow(unused)]
+fn main() {
+    enum Option&lt;T&gt; {
+        None,
+        Some(T),
+    }
+}
+</code></pre></pre>
+<p>The <code>Option&lt;T&gt;</code> enum is so useful that it's even included in the prelude; you don't need to bring it into scope explicitly. In addition, so are its variants: you can use <code>Some</code> and <code>None</code> directly without the <code>Option::</code> prefix. The <code>&lt;T&gt;</code> syntax: generic type parameter. <code>&lt;T&gt;</code> means the <code>Some</code> variant of the <code>Option</code> enum can hold one piece of data of any type. Here are some examples of using <code>Option</code> values to hold number types and string types:</p>
+<pre><pre class="playground"><code class="language-rust">fn main() {
+    let some_number = Some(5);
+    let some_string = Some(&quot;a string&quot;);
+
+    let absent_number: Option&lt;i32&gt; = None;
+    // if we use None rather than Some,
+    // we need to tell Rust what type of Option&lt;T&gt; we have
+    // because the compiler can't infer the type,
+    // that the `Some` variant will hold by looking only at a `None` value.
+}
+</code></pre></pre>
+<p>When we have a <code>Some</code> value, we know that a value is present and the value is held within the <code>Some</code>. When we have a <code>None</code> value, in some sense, it means the same thing as null: we don't have a valid value. We can proceed confidently without having to check for null before using that value. You have to convert an <code>Option&lt;T&gt;</code> to a <code>T</code> before you can perform <code>T</code> operations with it. Generally, this helps catch one of the most common issues with null: assuming that something isn't null when it actually is.</p>
+<h2 id="63-the-match-control-flow-operator"><a class="header" href="#63-the-match-control-flow-operator">6.3 The <code>match</code> Control Flow Operator</a></h2>
+<pre><pre class="playground"><code class="language-rust">enum Coin {
+    Penny,
+    Nickel,
+    Dime,
+    Quarter,
+}
+
+fn value_in_cents(coin: Coin) -&gt; u8 {
+    match coin {
+        Coin::Penny =&gt; 1,
+        Coin::Nickel =&gt; 5,
+        Coin::Dime =&gt; 10,
+        Coin::Quarter =&gt; 25,
+        // pattern =&gt; code
+        // the =&gt; operator that separates the pattern and the code (expression) to run
+        // arms are executed in order
+    }
+}
+
+fn main() {}
+</code></pre></pre>
+<h2 id="64-patterns-that-bind-to-values"><a class="header" href="#64-patterns-that-bind-to-values">6.4 Patterns that Bind to Values</a></h2>
+<pre><pre class="playground"><code class="language-rust">#[derive(Debug)]
+enum UsState {
+    Alabama,
+    Alaska,
+    // --snip--
+}
+
+enum Coin {
+    Penny,
+    Nickel,
+    Dime,
+    Quarter(UsState),
+}
+
+fn value_in_cents(coin: Coin) -&gt; u8 {
+    match coin {
+        Coin::Penny =&gt; 1,
+        Coin::Nickel =&gt; 5,
+        Coin::Dime =&gt; 10,
+        Coin::Quarter(state) =&gt; {
+            println!(&quot;State quarter from {:?}!&quot;, state);
+            25
+        }
+    }
+}
+
+fn main() {
+    value_in_cents(Coin::Quarter(UsState::Alaska));
+}
+</code></pre></pre>
+<h2 id="65-matching-with-optiont"><a class="header" href="#65-matching-with-optiont">6.5 Matching with <code>Option&lt;T&gt;</code></a></h2>
+<pre><pre class="playground"><code class="language-rust">fn main() {
+    fn plus_one(x: Option&lt;i32&gt;) -&gt; Option&lt;i32&gt; {
+        match x {
+            None =&gt; None,
+            Some(i) =&gt; Some(i + 1),
+        }
+    }
+
+    let five = Some(5);
+    let six = plus_one(five);
+    let none = plus_one(None);
+}
+</code></pre></pre>
+<p>Matches in Rust are exhaustive: we must exhaust every last possibility in order for the code to be valid.</p>
+<h2 id="66-the-_-placeholder"><a class="header" href="#66-the-_-placeholder">6.6 The _ Placeholder</a></h2>
+<pre><pre class="playground"><code class="language-rust">fn main() {
+    let some_u8_value = 0u8;
+    match some_u8_value {
+        1 =&gt; println!(&quot;one&quot;),
+        3 =&gt; println!(&quot;three&quot;),
+        5 =&gt; println!(&quot;five&quot;),
+        7 =&gt; println!(&quot;seven&quot;),
+        _ =&gt; (),
+        // () is the unit value
+        // so nothing will happen in the _ case
+    }
+}
+</code></pre></pre>
+<p>The <code>_</code> pattern will match any value. By putting it after our other arms, the <code>_</code> will match all the possible cases that aren't specified before it.</p>
+<h2 id="67-if-let-concise-control-flow"><a class="header" href="#67-if-let-concise-control-flow">6.7 <code>if let</code> Concise Control Flow</a></h2>
+<p>The <code>if let</code> syntax lets you combine <code>if</code> and <code>let</code> into a less verbose way to handle values that match one pattern while ignoring the rest.</p>
+<pre><pre class="playground"><code class="language-rust">fn main() {
+    let some_u8_value = Some(0u8);
+    match some_u8_value {
+        Some(3) =&gt; println!(&quot;three&quot;),
+        _ =&gt; (),
+    }
+}
+</code></pre></pre>
+<p>The following code behaves the same:</p>
+<pre><pre class="playground"><code class="language-rust">fn main() {
+    let some_u8_value = Some(0u8);
+    if let Some(3) = some_u8_value {
+        println!(&quot;three&quot;);
+    }
+}
+</code></pre></pre>
+<p>The syntax if let takes a pattern and an expression separated by an equal sign. It works the same way as a match, where the expression is given to the match and the pattern is its first arm.</p>
+<p>Using if let means less typing, less indentation, and less boilerplate code. However, you lose the exhaustive checking that match enforces. Choosing between match and if let depends on what you’re doing in your particular situation and whether gaining conciseness is an appropriate trade-off for losing exhaustive checking.</p>
+<p>In other words, you can think of if let as syntax sugar for a match that runs code when the value matches one pattern and then ignores all other values.</p>
+<p>We can include an else with an if let.</p>
+<pre><pre class="playground"><code class="language-rust">#[derive(Debug)]
+enum UsState {
+    Alabama,
+    Alaska,
+    // --snip--
+}
+
+enum Coin {
+    Penny,
+    Nickel,
+    Dime,
+    Quarter(UsState),
+}
+
+fn main() {
+    let coin = Coin::Penny;
+    let mut count = 0;
+    match coin {
+        Coin::Quarter(state) =&gt; println!(&quot;State quarter from {:?}!&quot;, state),
+        _ =&gt; count += 1,
+    }
+}
+
+</code></pre></pre>
+<pre><pre class="playground"><code class="language-rust">#[derive(Debug)]
+enum UsState {
+    Alabama,
+    Alaska,
+    // --snip--
+}
+
+enum Coin {
+    Penny,
+    Nickel,
+    Dime,
+    Quarter(UsState),
+}
+
+fn main() {
+    let coin = Coin::Penny;
+    let mut count = 0;
+    if let Coin::Quarter(state) = coin {
+        println!(&quot;State quarter from {:?}!&quot;, state);
+    } else {
+        count += 1;
+    }
+}
+</code></pre></pre>
+<p>They are the same.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                        
-                        
                         <div style="clear: both"></div>
                     </nav>
                 </div>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                
-                            </nav>
+            </nav>
 
         </div>
 
-        
-        
-        
-                <script type="text/javascript">
+        <script type="text/javascript">
             window.playground_copyable = true;
         </script>
-        
-        
-                <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
         <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
         <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
-        
         <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
         <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
         <script src="book.js" type="text/javascript" charset="utf-8"></script>
 
         <!-- Custom JS scripts -->
-        
-                        <script type="text/javascript">
+        <script type="text/javascript">
         window.addEventListener('load', function() {
             window.setTimeout(window.print, 100);
         });
         </script>
-                
     </body>
 </html>
