@@ -10,3 +10,4 @@
 - [Common Concepts](3_common_concepts.md)
 - [Ownership](4_ownership.md)
 - [Structs](5_structs.md)
+- [Enums and Pattern Matching](6_enums_and_pattern_matching.md)
