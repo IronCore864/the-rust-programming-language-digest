@@ -34,7 +34,11 @@ fn main() {
 - constants can be declared in any scope, including the global scope
 - constants may be set only to a constant expression, not the result of a function call or any other value that could only be computed at runtime
 
-Here’s an example of a constant declaration where the constant’s name is MAX_POINTS and its value is set to 100,000. (Rust’s naming convention for constants is to use all uppercase with underscores between words, and underscores can be inserted in numeric literals to improve readability):
+Here's an example of a constant declaration where the constant's name is THREE_HOURS_IN_SECONDS and its value is set to the result of multiplying 60 (the number of seconds in a minute) by 60 (the number of minutes in an hour) by 3 (the number of hours we want to count in this program):
+
+```rust
+const THREE_HOURS_IN_SECONDS: u32 = 60 * 60 * 3;
+```
 
 ### 3.1.3 Shadowing
 
@@ -157,9 +161,9 @@ fn main() {
 
 In Rust, the idiomatic comment style starts a comment with two slashes `//`, and the comment continues until the end of the line. 
 
-Comments can also be placed at the end of lines containing code, but you’ll more often see them used with the comment on a separate line above the code it’s annotating.
+Comments can also be placed at the end of lines containing code, but you'll more often see them used with the comment on a separate line above the code it's annotating.
 
-For comments that extend beyond a single line, you’ll need to include `//` on each line.
+For comments that extend beyond a single line, you'll need to include `//` on each line.
 
 ## 3.5. Control Flow
 
