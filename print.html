@@ -329,7 +329,13 @@ fn main() {
 <li>constants can be declared in any scope, including the global scope</li>
 <li>constants may be set only to a constant expression, not the result of a function call or any other value that could only be computed at runtime</li>
 </ul>
-<p>Here’s an example of a constant declaration where the constant’s name is MAX_POINTS and its value is set to 100,000. (Rust’s naming convention for constants is to use all uppercase with underscores between words, and underscores can be inserted in numeric literals to improve readability):</p>
+<p>Here's an example of a constant declaration where the constant's name is THREE_HOURS_IN_SECONDS and its value is set to the result of multiplying 60 (the number of seconds in a minute) by 60 (the number of minutes in an hour) by 3 (the number of hours we want to count in this program):</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>const THREE_HOURS_IN_SECONDS: u32 = 60 * 60 * 3;
+<span class="boring">}
+</span></code></pre></pre>
 <h3 id="313-shadowing"><a class="header" href="#313-shadowing">3.1.3 Shadowing</a></h3>
 <p>You can declare a new variable with the same name as a previous variable. The first variable is shadowed by the second.</p>
 <pre><pre class="playground"><code class="language-rust">fn main() {
@@ -417,8 +423,8 @@ fn main() {
 </code></pre></pre>
 <h2 id="34-comments"><a class="header" href="#34-comments">3.4. Comments</a></h2>
 <p>In Rust, the idiomatic comment style starts a comment with two slashes <code>//</code>, and the comment continues until the end of the line. </p>
-<p>Comments can also be placed at the end of lines containing code, but you’ll more often see them used with the comment on a separate line above the code it’s annotating.</p>
-<p>For comments that extend beyond a single line, you’ll need to include <code>//</code> on each line.</p>
+<p>Comments can also be placed at the end of lines containing code, but you'll more often see them used with the comment on a separate line above the code it's annotating.</p>
+<p>For comments that extend beyond a single line, you'll need to include <code>//</code> on each line.</p>
 <h2 id="35-control-flow"><a class="header" href="#35-control-flow">3.5. Control Flow</a></h2>
 <h3 id="351-if--else-if"><a class="header" href="#351-if--else-if">3.5.1 <code>if</code> / <code>else if</code></a></h3>
 <pre><pre class="playground"><code class="language-rust">fn main() {
