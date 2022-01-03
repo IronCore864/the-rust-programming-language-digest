@@ -1,9 +1,11 @@
 # The Rust Programming Language
 
-The digest for the [Rust book](https://doc.rust-lang.org/book/title-page.html).
+## What
 
-For readers who don't have deep understanding of another programming language but want to learn Rust, it's highly recommended to read the original book. It's much more verbose but also much more in detail.
+This is a digest of the [Rust book](https://doc.rust-lang.org/book/title-page.html). Still work-in-progress.
 
-For experienced programmars who are already quite famliar with at least one language, reading this digest might work for you to get started with Rust quickly.
+## Why
 
-This digest also works as a "cheat sheet" if you forget something but want to do a quick search.
+The Rust book is a bit verbose if you already have some basic understanding of any other programming language. So, I'm trying to create a (much) shorter version of it and still cover the most critical parts. The digest also works as a "cheat sheet" in case you forget something and want to do a quick search.
+
+That said, for readers who are inexperienced in any programming language but want to learn Rust, it's still highly recommended to read the original book because, my god, it's good.
